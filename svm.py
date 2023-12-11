@@ -43,7 +43,7 @@ class SVM:
 
     def _calculate_bias(self):
         index = np.where((self.alpha) > 0 & (self.alpha < self.params.C))[0]
-        b_i = self.y[index] - (self.alpha * self.y).dot(self.kernel(self.X, self.X[index]))
+        b_i = self.y[index] - (self.alpha[index] * self.y[index]).dot(self.kernel(self.X[index], self.X[index]))
         return np.mean(b_i)
 
     def _gradient(self, yi, xi):
@@ -70,9 +70,7 @@ class SVM:
             loss = np.sum(self.alpha) - 0.5 * np.sum(np.outer(self.alpha, self.alpha) * y_iy_jk_ij)
             losses.append(loss)
 
-        index = np.where((self.alpha) > 0 & (self.alpha < self.params.C))[0]
-        b_i = self.y[index] - np.sum(self.alpha * self.y * self.kernel(self.X, self.X[index]), axis=0)
-        self.bias = np.mean(b_i)
+        self.bias = self._calculate_bias()
 
         plt.plot(losses)
         plt.title("loss per epochs")
