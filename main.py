@@ -10,6 +10,10 @@ y = wine_quality.data.targets
 
 y_binary = np.where(y > 5, 1, -1)
 
+limit = 3000
+X = X[:limit]
+y_binary = y_binary[:limit]
+
 X_train, X_test, y_train, y_test = train_test_split(X, y_binary, test_size=0.2, random_state=42)
 
 y_train = y_train.ravel()
