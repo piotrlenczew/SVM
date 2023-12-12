@@ -12,12 +12,12 @@ y_binary = np.where(y > 5, 1, -1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y_binary, test_size=0.2, random_state=42)
 
+y_train = y_train.ravel()
+y_test = y_test.ravel()
+
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
-
-print(X_train_scaled)
-print(X_test_scaled)
 
 svm_params = SVMParams()
 svm = SVM(svm_params)
