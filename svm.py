@@ -43,21 +43,21 @@ class SVM:
 
     def _calculate_bias(self):
         index = np.where((self.alpha) > 0 & (self.alpha < self.params.C))[0]
-        b_i = self.y[index] - (self.alpha[index] * self.y[index]).dot(self.kernel(self.X[index], self.X[index]))
+        b_i = self.y[index] - np.sum((self.alpha * self.y).reshape(-1, 1)*self.kernel(self.X, self.X[index]), axis=0)
         return np.mean(b_i)
 
     def _gradient(self, yi, xi):
         return 1 - yi * np.sum([self.alpha[j] * self.y[j] * self.kernel(self.X[j], xi) for j in range(self.X.shape[0])])
 
     def fit(self, X, y, lr=1e-3, epochs=500):
-        self.X = X
-        self.y = y
+        self.X = np.array(X)
+        self.y = np.array(y)
 
         self.alpha = np.random.random(X.shape[0])
         self.bias = 0
         ones = np.ones(X.shape[0])
 
-        y_iy_jk_ij = np.outer(y, y) * self.kernel(X, X)
+        y_iy_jk_ij = np.outer(self.y, self.y) * self.kernel(self.X, self.X)
 
         losses = []
         for _ in range(epochs):
@@ -80,8 +80,11 @@ class SVM:
         return (self.alpha * self.y).dot(self.kernel(self.X, X)) + self.bias
 
     def predict(self, X):
+        X = np.array(X)
         return np.sign(self._decision_function(X))
 
     def score(self, X, y):
+        X = np.array(X)
+        y = np.array(y)
         y_hat = self.predict(X)
         return np.mean(y == y_hat)
