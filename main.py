@@ -10,7 +10,7 @@ y = wine_quality.data.targets
 
 y_binary = np.where(y > 5, 1, -1)
 
-limit = 3000
+limit = 1000
 X = X[:limit]
 y_binary = y_binary[:limit]
 
