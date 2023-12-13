@@ -24,9 +24,9 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-lr = 1e-3
+lr = 1e-2
 
-svm_params = SVMParams(C=100, kernel='rbf', sigma=1)
+svm_params = SVMParams(C=1, kernel='rbf', sigma=0.1)
 svm = SVM(svm_params)
 losses = svm.fit(X_train_scaled, y_train, lr)
 plt.plot(losses)

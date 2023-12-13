@@ -36,7 +36,9 @@ class SVM:
         return np.exp(-(1 / 2 * self.params.sigma ** 2) * np.linalg.norm(u[:, np.newaxis] - v[np.newaxis, :], axis=-1) ** 2)
 
     def _calculate_bias(self):
-        index = np.where((self.alpha) > 0 & (self.alpha < self.params.C))[0]
+        index = np.where((self.alpha > 0) & (self.alpha < self.params.C))[0]
+        if len(index) == 0:
+            return 0
         b = self.y[index] - (self.alpha * self.y).dot(self.kernel(self.X, self.X[index]))
         return np.mean(b)
 
